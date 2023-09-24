@@ -3,8 +3,14 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.subsystems;
+import com.ctre.phoenix.sensors.Pigeon2;
+
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
+import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -14,9 +20,12 @@ import frc.robot.utilities.swerve.SwerveModule;
 
 
 public class Drivetrain6390 extends SubsystemBase {
+
   public static SwerveModule[] swerveModules;
-  
+  public static SwerveModulePosition[] SwervePositions = {swerveModules[0].getPostion(), swerveModules[1].getPostion(), swerveModules[2].getPostion(), swerveModules[3].getPostion()};
+  public static Pigeon2 gyro = new Pigeon2(DRIVETRAIN.PIGEON, DRIVETRAIN.CANBUS);
   public static SwerveDriveKinematics kinematics = new SwerveDriveKinematics(DRIVETRAIN.SWERVE_MODULE_LOCATIONS);
+  public static  SwerveDriveOdometry odometry = new SwerveDriveOdometry(kinematics, Rotation2d.fromDegrees(gyro.getYaw()), SwervePositions);
   
   public static SwerveModuleState[] states;
   
@@ -34,7 +43,6 @@ public class Drivetrain6390 extends SubsystemBase {
   /** Creates a new SwerveDriveSubsystem. */
   public Drivetrain6390() 
   {
-
   }
 
   public void swerve(ChassisSpeeds speeds)
@@ -45,6 +53,31 @@ public class Drivetrain6390 extends SubsystemBase {
    swerveModules[1].setDesiredState(states[1]);
    swerveModules[2].setDesiredState(states[2]);
    swerveModules[3].setDesiredState(states[3]);
+  }
+  public Pose2d getPose()
+  {
+    return odometry.getPoseMeters();
+  }
+  public void resetOdometry(Pose2d pose)
+  {
+    odometry.resetPosition(getRotation2d(), getModulePositions(), pose);
+  }
+  
+  public double getHeading(){
+    return Math.IEEEremainder(gyro.getYaw(), 360);
+  }
+
+  public Rotation2d getRotation2d(){
+    return Rotation2d.fromDegrees(getHeading());
+  }
+
+  private SwerveModulePosition[] getModulePositions(){
+    SwerveModulePosition[] positions = new SwerveModulePosition[swerveModules.length];
+    positions[0] = swerveModules[0].getPostion();
+    positions[1] = swerveModules[1].getPostion();
+    positions[2] = swerveModules[2].getPostion();
+    positions[3] = swerveModules[3].getPostion();
+    return positions;
   }
   
 
