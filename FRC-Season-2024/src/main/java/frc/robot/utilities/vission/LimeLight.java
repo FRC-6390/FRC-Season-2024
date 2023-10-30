@@ -1,4 +1,4 @@
-package frc.robot.utilities.sensors.vission;
+package frc.robot.utilities.vission;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
@@ -13,7 +13,22 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 public class LimeLight {
     private LimelightConfig config;
     private NetworkTable limelightTable;
-    public NetworkTableEntry tv, tx, ty, ta, ts, tl, tshort, tlong, thor, getpipe, camtran, tid, json, botpose, tclass, tc;
+    public static NetworkTableEntry tv;
+    public static NetworkTableEntry tx;
+    public NetworkTableEntry ty;
+    public NetworkTableEntry ta;
+    public NetworkTableEntry ts;
+    public NetworkTableEntry tl;
+    public NetworkTableEntry tshort;
+    public NetworkTableEntry tlong;
+    public NetworkTableEntry thor;
+    public NetworkTableEntry getpipe;
+    public NetworkTableEntry camtran;
+    public NetworkTableEntry tid;
+    public NetworkTableEntry json;
+    public NetworkTableEntry botpose;
+    public NetworkTableEntry tclass;
+    public NetworkTableEntry tc;
     public static NetworkTableEntry ledMode;
     public NetworkTableEntry camMode;
     public NetworkTableEntry pipeline;
@@ -143,7 +158,7 @@ public class LimeLight {
     /**
      * Whether the limelight has any valid targets
      */
-    public boolean hasValidTarget(){
+    public static boolean hasValidTarget(){
         return tv.getDouble(0) == 1;
     }
 
@@ -155,7 +170,7 @@ public class LimeLight {
     /**
      * Horizontal Offset From Crosshair To Target (LL1: -27 degrees to 27 degrees | LL2: -29.8 to 29.8 degrees)
      */
-    public double getTargetHorizontalOffset(){
+    public static double getTargetHorizontalOffset(){
         return tx.getDouble(0);
     }
 

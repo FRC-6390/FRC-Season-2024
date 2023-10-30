@@ -54,6 +54,20 @@ public class Drivetrain6390 extends SubsystemBase {
    swerveModules[2].setDesiredState(states[2]);
    swerveModules[3].setDesiredState(states[3]);
   }
+
+  public static void translate(double direction, double power)
+  {
+    swerveModules[0].setToAngle(direction);
+    swerveModules[1].setToAngle(direction);
+    swerveModules[2].setToAngle(direction);
+    swerveModules[3].setToAngle(direction);
+
+    swerveModules[0].setDriveMotor(power);
+    swerveModules[1].setDriveMotor(power);
+    swerveModules[2].setDriveMotor(power);
+    swerveModules[3].setDriveMotor(power);
+  }
+
   public Pose2d getPose()
   {
     return odometry.getPoseMeters();

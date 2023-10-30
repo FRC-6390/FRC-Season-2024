@@ -11,39 +11,6 @@ import frc.robot.utilities.swerve.SwerveModuleConfig;
 
 public interface Constants {
     
-    public interface GRIPPER {
-        int SIDE_GRIPPER = 21;
-    }
-    public interface WASHING_MACHINE {
-        int MOTOR_ID = 15;
-    }
-    public interface ARM {
-        int ARM_MOTOR = 18;
-        int ARM_ENCODER = 19;
-        int OUTPUT_ROLLER = 17;
-    }
-    public interface ELEVATOR {
-        int DRIVE_MOTOR = 16;
-        int ENCODER = 20;
-        double GEARBOX_RATIO = 0;
-        int LIMIT_SWITCH = 1;
-
-        //encoder setpoint values
-        double SETPOINT_HIGH = 5450;
-        double SETPOINT_MID = 1790;
-        double SETPOINT_LOW = 0;
-        double SETPOINT_DOWN = 0;
-    }
-
-    public interface INTAKE {
-        int ARM = 14;
-        int INTAKE_MOTOR = 23;
-        int POSITION_ENCODER = 13;
-        int LIMIT_SWITCH = 0;
-        double ARM_GEARBOX_RATIO = 0;
-        double GEARBOX_RATIO = 1d/10d;
-        PIDConfig pidConfig = new PIDConfig(0, 0, 0);
-    }
 
     public interface DRIVETRAIN{
 

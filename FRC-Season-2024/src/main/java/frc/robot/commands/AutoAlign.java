@@ -56,7 +56,7 @@ public class AutoAlign extends CommandBase {
       Drivetrain6390.translate(90, controller.calculate(LimeLight.getTargetHorizontalOffset(), 0));
     }
     SmartDashboard.putNumber("Horizontal Offset", LimeLight.getTargetHorizontalOffset());
-    SmartDashboard.putBoolean("Has Target?", LimeLight.hasValidTarget);
+    SmartDashboard.putBoolean("Has Target?", LimeLight.hasValidTarget());
   }
 
   // Called once the command ends or is interrupted.
