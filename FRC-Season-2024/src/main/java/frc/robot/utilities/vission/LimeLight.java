@@ -158,7 +158,7 @@ public class LimeLight {
     /**
      * Whether the limelight has any valid targets
      */
-    public static boolean hasValidTarget(){
+    public boolean hasValidTarget(){
         return tv.getDouble(0) == 1;
     }
 
@@ -170,7 +170,7 @@ public class LimeLight {
     /**
      * Horizontal Offset From Crosshair To Target (LL1: -27 degrees to 27 degrees | LL2: -29.8 to 29.8 degrees)
      */
-    public static double getTargetHorizontalOffset(){
+    public double getTargetHorizontalOffset(){
         return tx.getDouble(0);
     }
 

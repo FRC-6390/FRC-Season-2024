@@ -7,14 +7,12 @@ package frc.robot.commands;
 import java.util.HashMap;
 import java.util.Map;
 
-import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
 
 import com.pathplanner.lib.PathConstraints;
 import com.pathplanner.lib.PathPlanner;
-import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.auto.SwerveAutoBuilder;
 import com.pathplanner.lib.auto.PIDConstants;
 
@@ -35,7 +33,7 @@ public class Auto extends CommandBase {
       RobotContainer.driveTrain::resetOdometry,
       XY_PID,
       THETA_PID,
-      RobotContainer.driveTrain::swerve,
+      RobotContainer.driveTrain::drive,
       eventMap,
       true,
       RobotContainer.driveTrain
@@ -43,5 +41,6 @@ public class Auto extends CommandBase {
     
     public static CommandBase runAuto(String autoSelector) {
         return autoBuilder.fullAuto(PathPlanner.loadPathGroup(autoSelector, new PathConstraints(1.5, 0.8)));
+        
     }
 }

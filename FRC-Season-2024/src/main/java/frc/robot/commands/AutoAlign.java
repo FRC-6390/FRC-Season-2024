@@ -4,31 +4,26 @@
 
 package frc.robot.commands;
 
-import java.util.function.DoubleSupplier;
-
-import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants;
-import frc.robot.Constants.SWERVEMODULE;
 import frc.robot.subsystems.Drivetrain6390;
 import frc.robot.utilities.vission.LimeLight;
-import frc.robot.utilities.vission.LimelightConfig;
 
 
 public class AutoAlign extends CommandBase {
   
+  //PID controller
+  public PIDController controller;
+  //Sets up a limelight - camera used for vision tracking
+  public LimeLight limeLight = new LimeLight();
+  //Declare the drivetrain object
+  public Drivetrain6390 drivetrain = new Drivetrain6390();
   
-  PIDController controller;
-  double kP;
-  double kI;
-  double kD;
+  //PID constants
+  double kP = 0;
+  double kI = 0;
+  double kD = 0;
 
   public AutoAlign()
   {
@@ -45,25 +40,28 @@ public class AutoAlign extends CommandBase {
   @Override
   public void execute() 
   {
-    
+    //If the limelight has not detected something...
+    if(limeLight.hasValidTarget() != true)
+    {
 
-    if(LimeLight.hasValidTarget() == true)
-    {
-      Drivetrain6390.translate(0,0);
+      drivetrain.translate(0,0);
     }
-    else
+    else //But if it has...
     {
-      Drivetrain6390.translate(90, controller.calculate(LimeLight.getTargetHorizontalOffset(), 0));
+      //Use the translate command to move the chassis left or right, depending on which direction lowers the horizontal offest to target
+      drivetrain.translate(90, controller.calculate(limeLight.getTargetHorizontalOffset(), 0));
     }
-    SmartDashboard.putNumber("Horizontal Offset", LimeLight.getTargetHorizontalOffset());
-    SmartDashboard.putBoolean("Has Target?", LimeLight.hasValidTarget());
+
+    //Display some data
+    SmartDashboard.putNumber("Horizontal Offset", limeLight.getTargetHorizontalOffset());
+    SmartDashboard.putBoolean("Has Target?", limeLight.hasValidTarget());
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) 
   {
-    Drivetrain6390.translate(0, 0);
+    drivetrain.translate(0, 0);
   }
 
   // Returns true when the command should end.
