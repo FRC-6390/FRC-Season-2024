@@ -3,8 +3,8 @@ package frc.robot.utilities.vission;
 public class LimelightConfig {
     private static String DEFUALT_TABLE = "limelight"; 
     private String table;  
-    private double mountingAngle;
-    private double mountingHeightMeters;
+    public double mountingAngle;
+    public double mountingHeightMeters;
 
     public LimelightConfig(String table, double mountingAngle, double mountingHeightMeters)
     {

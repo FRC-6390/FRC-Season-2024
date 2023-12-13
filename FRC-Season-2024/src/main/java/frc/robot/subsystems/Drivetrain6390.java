@@ -172,11 +172,11 @@ public class Drivetrain6390 extends SubsystemBase {
   
 
   //Idk if this is ever used but it should calculate where the robot is and move it there
-  public void driftCorrection(ChassisSpeeds speeds){
-    // double speed = Math.abs(getAverageSpeed()); //method removed pls refer to github if needed
-    if(Math.abs(speeds.omegaRadiansPerSecond) > 0.0) desiredHeading = pose.getRotation().getDegrees();
-    else speeds.omegaRadiansPerSecond += pid.calculate(desiredHeading);
-  }
+  // public void driftCorrection(ChassisSpeeds speeds){
+  //   // double speed = Math.abs(getAverageSpeed()); //method removed pls refer to github if needed
+  //   if(Math.abs(speeds.omegaRadiansPerSecond) > 0.0) desiredHeading = pose.getRotation().getDegrees();
+  //   else speeds.omegaRadiansPerSecond += pid.calculate(desiredHeading);
+  // }
 
   /*
   Feed chassis speeds into this function and the variable speeds in this subsystem will be set to that, which is then fed into kinematics in periodic 
@@ -287,7 +287,7 @@ public class Drivetrain6390 extends SubsystemBase {
     ChassisSpeeds speed = new ChassisSpeeds(xSpeed, ySpeed, thetaSpeed);
 
     //AGHH WHAT IS THIS BRUH
-    driftCorrection(speed);
+    //driftCorrection(speed);
 
     /* 
        This converts chasssis speeds into swerve module states. 

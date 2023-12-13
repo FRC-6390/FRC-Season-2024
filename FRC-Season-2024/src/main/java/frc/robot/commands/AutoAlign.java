@@ -6,6 +6,10 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivetrain6390;
 import frc.robot.utilities.vission.LimeLight;
@@ -15,18 +19,30 @@ public class AutoAlign extends CommandBase {
   
   //PID controller
   public PIDController controller;
+  public PIDController yController;
   //Sets up a limelight - camera used for vision tracking
-  public LimeLight limeLight = new LimeLight();
+  public LimeLight limeLight;
   //Declare the drivetrain object
-  public Drivetrain6390 drivetrain = new Drivetrain6390();
+  public Drivetrain6390 drivetrain;
+  
+  public NetworkTable lime = NetworkTableInstance.getDefault().getTable("limelight");
   
   //PID constants
-  double kP = 0;
+  double kP = 0.08;
   double kI = 0;
   double kD = 0;
 
-  public AutoAlign()
+  double kP2 = 0.08;
+  double kI2 = 0;
+  double kD2 = 0;
+
+  double targetHeightMeters = 0.7112;
+  public String direction;
+
+  public AutoAlign(Drivetrain6390 drivetrain, LimeLight limeLight)
   {
+    this.drivetrain = drivetrain;
+    this.limeLight = limeLight;
   }
 
   // Called when the command is initially scheduled.
@@ -34,34 +50,42 @@ public class AutoAlign extends CommandBase {
   public void initialize() 
   {
     controller = new PIDController(kP, kI, kD);
+    yController = new PIDController(kP2, kI2, kD2);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() 
   {
-    //If the limelight has not detected something...
-    if(limeLight.hasValidTarget() != true)
-    {
+    NetworkTableEntry poseEntry = lime.getEntry("botpose");
+    Double[] dub = {0.0 ,0.0 ,0.0 ,0.0 ,0.0 ,0.0};
+    Double[] pose = poseEntry.getDoubleArray(dub);
+    
+    //This should put robot coordinates into smart dashboard.
+    SmartDashboard.putNumberArray("Pose Array", pose);
 
-      drivetrain.translate(0,0);
-    }
-    else //But if it has...
-    {
-      //Use the translate command to move the chassis left or right, depending on which direction lowers the horizontal offest to target
-      drivetrain.translate(90, controller.calculate(limeLight.getTargetHorizontalOffset(), 0));
-    }
+    /*
+    UNCOMMENT THE FOLLOWING CODE IF VALUES ARE BEING OUTPUTTED TO SMARTDASHBOARD UNDER "POSE ARRAY"
+    FIRST 3 NUMBERS SHOULD REPRESENT THE X Y Z DISTANCES TO TARGET  
+    */
 
-    //Display some data
-    SmartDashboard.putNumber("Horizontal Offset", limeLight.getTargetHorizontalOffset());
-    SmartDashboard.putBoolean("Has Target?", limeLight.hasValidTarget());
+    // if(limeLight.hasValidTarget() != true)
+    // {
+    //   drivetrain.drive(new ChassisSpeeds(0,0,0));
+    // }
+    // else //But if it has...
+    // {
+    //   //Use the feedback drive command to move the chassis left or right, depending on which direction lowers the horizontal offest to target
+    //   drivetrain.drive(new ChassisSpeeds(yController.calculate(pose[0], 0), controller.calculate(pose[1], 0),0));
+    // }
+    
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) 
   {
-    drivetrain.translate(0, 0);
+    drivetrain.drive(new ChassisSpeeds(0,0,0));
   }
 
   // Returns true when the command should end.

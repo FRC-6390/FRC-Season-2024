@@ -11,7 +11,7 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 
 public class LimeLight {
-    private LimelightConfig config;
+    public LimelightConfig config;
     private NetworkTable limelightTable;
     public static NetworkTableEntry tv;
     public static NetworkTableEntry tx;

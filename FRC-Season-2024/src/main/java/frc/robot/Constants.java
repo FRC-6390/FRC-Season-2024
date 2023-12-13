@@ -4,6 +4,9 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
 import frc.robot.utilities.controlloop.PIDConfig;
@@ -84,6 +87,61 @@ public interface Constants {
         
         
     }
+
+    public enum APRILTAGS {
     
+        INVALID(0, new Pose3d(0,0,0, new Rotation3d())),
+        TEST(1, new Pose3d(15.57,0.985,0.436, new Rotation3d())),
+        //Z is to the carpet to center of the tag
+        //RED_ALLIANCE_RIGHT(1, new Pose3d(15.57,0.985,0.436, new Rotation3d())),
+        RED_ALLIANCE_MIDDLE(2, new Pose3d(15.57,2.69,0.436, new Rotation3d())),
+        RED_ALLIANCE_LEFT(3, new Pose3d(15.57,4.37,0.436, new Rotation3d())),
+
+        BLUE_ALLIANCE_LOADING(4, new Pose3d(0.36,6.67,0.666, new Rotation3d())),
+        RED_ALLIANCE_LOADING(5, new Pose3d(16.18,6.67,0.666, new Rotation3d())),
+
+        BLUE_ALLIANCE_LEFT(6, new Pose3d(0.97,4.37,0.436, new Rotation3d())),
+        BLUE_ALLIANCE_MIDDLE(7, new Pose3d(0.97,2.69,0.436, new Rotation3d())),
+        BLUE_ALLIANCE_RIGHT(8, new Pose3d(0.97,0.985,0.436, new Rotation3d()));    
+
+        // Blue right X: 138cm - 41cm = 0.97m Y: 65cm+23.5cm + 5cm + 5cm = 0.985m
+        // Blue middle X: 138cm - 41cm = 0.97m Y: 191cm + 2.5cm+ 47cm+ + 5cm + 23.5cm = 2.69m
+        // Blue left X: 138cm - 41cm = 0.97m Y: 191cm + 168cm + 2.5cm + 47cm + 5cm + 23.5cm = 4.37m
+        
+        // Red loading X: 36cm = 0.36m Y: 550cm + 117cm = 6.67m
+        // Blue loading X: 1654cm - 36cm = 16.18m Y: 550cm + 117cm = 6.67m
+        
+        // Red right X: 1654cm - 138cm + 41cm = 15.57m Y: 65cm+23.5cm + 5cm + 5cm = 0.985m
+        // Red middle X: 1654cm - 138cm + 41cm = 15.57m Y: 191cm + 2.5cm+ 47cm+ + 5cm + 23.5cm = 2.69m
+        // Red left X: 1654cm - 138cm + 41cm = 15.57m Y: 191cm + 168cm + 2.5cm + 47cm + 5cm + 23.5cm = 4.37m
+
+        int id;
+        Pose3d pose3d;
+        private APRILTAGS(int id, Pose3d pose3d){
+            this.id = id;
+            this.pose3d = pose3d;
+            
+        }
+       
+        public static APRILTAGS getByID(int id){
+            for (APRILTAGS tag : values()) {
+                if(tag.getID() == id) return tag;
+            }
+            return INVALID;
+        }
+
+        public int getID(){
+            return id;
+        }
+
+        public double getHeight(){
+            return pose3d.getZ();
+        }
+        
+        public Pose2d getPose2d(){
+            return pose3d.toPose2d();
+        }
+
+    }
 }
 
